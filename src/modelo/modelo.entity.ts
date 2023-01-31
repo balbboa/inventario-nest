@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 export class Modelo {
   id?: number;
-  userId: number;
   name: string;
+  sku: string;
+  description: string;
 };
 
 // import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
