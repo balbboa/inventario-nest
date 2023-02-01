@@ -1,20 +1,13 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ModeloModule } from './modelo/modelo.module';
+import { VersioningType } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
 
-@Module({
-  imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'postgres',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
-    }),
-    ModeloModule,
-  ],
-})
-export class AppModule {}
+async function bootstrap() {
+  const app = await NestFactory.create(AppModule, { cors: true });
+  app.setGlobalPrefix('api');
+  app.enableVersioning({
+    type: VersioningType.URI
+  });
+  await app.listen(3000);
+}
+bootstrap();
