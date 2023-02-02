@@ -8,8 +8,16 @@ datasource db {
 }
 
 model Models {
-  id          Int     @id @default(autoincrement())
-  name        String
-  sku         String? @default("")
-  description String? @default("")
+  id              Int            @id @default(autoincrement())
+  name            String
+  sku             String?        @default("")
+  description     String?        @default("")
+  Manufacturers   Manufacturers? @relation(fields: [manufacturersId], references: [id])
+  manufacturersId Int?
+}
+
+model Manufacturers {
+  id     Int      @id @default(autoincrement())
+  name   String
+  models Models[]
 }
