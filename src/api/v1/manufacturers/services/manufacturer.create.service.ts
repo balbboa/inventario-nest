@@ -18,7 +18,7 @@ export class ManufacturersCreateService {
         throw new HttpException(
           {
             status: HttpStatus.FORBIDDEN,
-            error: 'Este manufacturero ja existe'
+            error: 'Este fabricante ja existe'
           },
           HttpStatus.FORBIDDEN
         );

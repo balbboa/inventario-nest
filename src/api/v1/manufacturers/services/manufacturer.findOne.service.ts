@@ -17,7 +17,7 @@ export class ManufacturersFindOneService {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'Este manufacturero não existe'
+          error: 'Este fabricante não existe'
         },
         HttpStatus.NOT_FOUND
       );

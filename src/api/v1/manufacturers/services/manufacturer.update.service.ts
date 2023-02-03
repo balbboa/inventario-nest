@@ -19,7 +19,7 @@ export class ManufacturersUpdateService {
         throw new HttpException(
           {
             status: HttpStatus.NOT_FOUND,
-            error: 'Este manufacturero não existe'
+            error: 'Este fabricante não existe'
           },
           HttpStatus.FORBIDDEN
         );
