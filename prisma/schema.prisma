@@ -8,16 +8,106 @@ datasource db {
 }
 
 model Models {
-  id              Int            @id @default(autoincrement())
-  name            String
-  sku             String?        @default("")
-  description     String?        @default("")
-  Manufacturers   Manufacturers? @relation(fields: [manufacturersId], references: [id])
-  manufacturersId Int?
+  id            Int             @id @default(autoincrement())
+  name          String
+  sku           String?         @default("")
+  description   String?         @default("")
+  manufacturers Manufacturers[]
+  group         Group[]
+  Item          Item?           @relation(fields: [itemId], references: [id])
+  itemId        Int?
 }
 
 model Manufacturers {
-  id     Int      @id @default(autoincrement())
-  name   String
-  models Models[]
+  id       Int     @id @default(autoincrement())
+  name     String
+  Models   Models? @relation(fields: [modelsId], references: [id])
+  modelsId Int?
+}
+
+model Supplier {
+  id          Int           @id @default(autoincrement())
+  name        String
+  serviceType ServiceType[]
+  Service     Service?      @relation(fields: [serviceId], references: [id])
+  serviceId   Int?
+  demand      Demand[]
+}
+
+model ServiceType {
+  id         Int       @id @default(autoincrement())
+  name       String
+  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId Int?
+}
+
+model Service {
+  id             Int        @id @default(autoincrement())
+  lineNumber     String
+  contractNumber String
+  obs            String
+  supplier       Supplier[]
+  immobile       Immobile[]
+  status         Status[]
+}
+
+model Immobile {
+  id        Int      @id @default(autoincrement())
+  name      String
+  place     String
+  district  String
+  city      String
+  latitude  String
+  longitude String
+  Service   Service? @relation(fields: [serviceId], references: [id])
+  serviceId Int?
+  Demand    Demand?  @relation(fields: [demandId], references: [id])
+  demandId  Int?
+  opm       Opms[]
+}
+
+model Demand {
+  id         Int        @id @default(autoincrement())
+  amount     Int
+  justify    String
+  immobile   Immobile[]
+  Supplier   Supplier?  @relation(fields: [supplierId], references: [id])
+  supplierId Int?
+  Group      Group?     @relation(fields: [groupId], references: [id])
+  groupId    Int?
+}
+
+model Group {
+  id       Int      @id @default(autoincrement())
+  name     String
+  Models   Models?  @relation(fields: [modelsId], references: [id])
+  modelsId Int?
+  demand   Demand[]
+}
+
+model Opms {
+  id         Int       @id @default(autoincrement())
+  name       String
+  acronym    String
+  Immobile   Immobile? @relation(fields: [immobileId], references: [id])
+  immobileId Int?
+}
+
+model Status {
+  id        Int      @id @default(autoincrement())
+  name      String
+  Service   Service? @relation(fields: [serviceId], references: [id])
+  serviceId Int?
+  Item      Item?    @relation(fields: [itemId], references: [id])
+  itemId    Int?
+}
+
+model Item {
+  id           Int      @id @default(autoincrement())
+  serialNumber String
+  tombNumber   String
+  imei         String
+  obs          String
+  status       Status[]
+  model        Models[]
 }
