@@ -7,7 +7,7 @@ export class ModelsUpdateService {
   constructor(private prisma: PrismaService) {}
 
   // Atualiza o modelo
-  async update(id: number, data: ModelDTO) {
+  async update(id: string, data: ModelDTO) {
     try {
       const modelExists = await this.prisma.models.findUnique({
         where: {

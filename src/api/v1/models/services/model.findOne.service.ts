@@ -6,7 +6,7 @@ export class ModelsFindOneService {
   constructor(private prisma: PrismaService) {}
 
   // Obtem um modelo
-  async findOne(id: number) {
+  async findOne(id: string) {
     const model = await this.prisma.models.findUnique({
       where: {
         id: id

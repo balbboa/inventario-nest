@@ -1,25 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
-import { ManufacturerDTO } from '../manufacturers.dto';
+import { GroupDTO } from '../groups.dto';
 
 @Injectable()
-export class ManufacturersUpdateService {
+export class GroupsCreateService {
   constructor(private prisma: PrismaService) {}
 
-  // Atualiza o fabricante
-  async update(id: string, data: ManufacturerDTO) {
+  // Cria um novo grupo
+  async create(data: GroupDTO) {
     try {
-      const manufacturerExists = await this.prisma.manufacturers.findUnique({
+      const groupExists = await this.prisma.group.findFirst({
         where: {
-          id
+          name: data.name
         }
       });
-
-      if (!manufacturerExists) {
+      if (groupExists) {
         throw new HttpException(
           {
-            status: HttpStatus.NOT_FOUND,
-            error: 'Este fabricante não existe'
+            status: HttpStatus.FORBIDDEN,
+            error: 'Este grupo ja existe'
           },
           HttpStatus.FORBIDDEN
         );
@@ -34,12 +33,10 @@ export class ManufacturersUpdateService {
       );
     }
 
-    // Atualiza o manufacturero
-    return await this.prisma.manufacturers.update({
-      data,
-      where: {
-        id
-      }
+    const group = await this.prisma.group.create({
+      data
     });
+
+    return group;
   }
 }

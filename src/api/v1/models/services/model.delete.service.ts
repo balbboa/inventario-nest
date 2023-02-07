@@ -5,7 +5,7 @@ import { PrismaService } from 'src/database/PrismaService';
 export class ModelsDeleteService {
   constructor(private prisma: PrismaService) {}
 
-  async delete(id: number) {
+  async delete(id: string) {
     const model = await this.prisma.models.delete({ where: { id } });
 
     if (!model) {

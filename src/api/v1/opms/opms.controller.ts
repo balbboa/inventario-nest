@@ -40,17 +40,17 @@ export class OpmController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return this.findOneService.findOne(Number(id));
+  async findOne(@Param('id') id: string) {
+    return this.findOneService.findOne(String(id));
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() data: OpmDTO) {
-    return this.updateService.update(Number(id), data);
+  async update(@Param('id') id: string, @Body() data: OpmDTO) {
+    return this.updateService.update(String(id), data);
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number) {
-    return this.deleteService.delete(Number(id));
+  async delete(@Param('id') id: string) {
+    return this.deleteService.delete(String(id));
   }
 }

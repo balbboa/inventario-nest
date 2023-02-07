@@ -6,7 +6,7 @@ export class ManufacturersFindOneService {
   constructor(private prisma: PrismaService) {}
 
   // Obtem um fabricante
-  async findOne(id: number) {
+  async findOne(id: string) {
     const manufacturer = await this.prisma.manufacturers.findUnique({
       where: {
         id: id

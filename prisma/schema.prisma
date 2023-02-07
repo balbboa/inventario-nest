@@ -8,102 +8,101 @@ datasource db {
 }
 
 model Models {
-  id            Int             @id @default(autoincrement())
-  name          String
-  sku           String?         @default("")
-  description   String?         @default("")
-  manufacturers Manufacturers[]
-  group         Group[]
-  Item          Item?           @relation(fields: [itemId], references: [id])
-  itemId        Int?
+  id              String         @id @default(uuid())
+  name            String
+  sku             String?        @default("")
+  description     String?        @default("")
+  groupId         String?
+  manufacturersId String?
+  Group           Group?         @relation(fields: [groupId], references: [id])
+  Manufacturers   Manufacturers? @relation(fields: [manufacturersId], references: [id])
+  item            Item[]
 }
 
 model Manufacturers {
-  id       Int     @id @default(autoincrement())
-  name     String
-  Models   Models? @relation(fields: [modelsId], references: [id])
-  modelsId Int?
+  id     String   @id @default(uuid())
+  name   String
+  models Models[]
 }
 
 model Supplier {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(uuid())
   name        String
-  serviceType ServiceType[]
+  serviceId   String?
   Service     Service?      @relation(fields: [serviceId], references: [id])
-  serviceId   Int?
   demand      Demand[]
+  serviceType ServiceType[]
 }
 
 model ServiceType {
-  id         Int       @id @default(autoincrement())
+  id         String    @id @default(uuid())
   name       String
+  supplierId String?
   Supplier   Supplier? @relation(fields: [supplierId], references: [id])
-  supplierId Int?
 }
 
 model Service {
-  id             Int        @id @default(autoincrement())
+  id             String     @id @default(uuid())
   lineNumber     String
   contractNumber String
   obs            String
-  supplier       Supplier[]
   immobile       Immobile[]
   status         Status[]
+  supplier       Supplier[]
 }
 
 model Immobile {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
   place     String
   district  String
   city      String
   latitude  String
   longitude String
-  Service   Service? @relation(fields: [serviceId], references: [id])
-  serviceId Int?
+  serviceId String?
+  demandId  String?
   Demand    Demand?  @relation(fields: [demandId], references: [id])
-  demandId  Int?
+  Service   Service? @relation(fields: [serviceId], references: [id])
   opm       Opms[]
 }
 
 model Demand {
-  id         Int        @id @default(autoincrement())
+  id         String     @id @default(uuid())
   amount     Int
   justify    String
-  immobile   Immobile[]
-  Supplier   Supplier?  @relation(fields: [supplierId], references: [id])
-  supplierId Int?
+  supplierId String?
+  groupId    String?
   Group      Group?     @relation(fields: [groupId], references: [id])
-  groupId    Int?
+  Supplier   Supplier?  @relation(fields: [supplierId], references: [id])
+  immobile   Immobile[]
 }
 
 model Group {
-  id       Int      @id @default(autoincrement())
-  name     String
-  Models   Models?  @relation(fields: [modelsId], references: [id])
-  modelsId Int?
-  demand   Demand[]
+  id     String   @id @default(uuid())
+  name   String
+  demand Demand[]
+  models Models[]
 }
 
 model Opms {
-  id         Int       @id @default(autoincrement())
+  id         String    @id @default(uuid())
   name       String
   acronym    String
+  immobileId String?
   Immobile   Immobile? @relation(fields: [immobileId], references: [id])
-  immobileId Int?
 }
 
 model Status {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(uuid())
   name      String
-  Service   Service? @relation(fields: [serviceId], references: [id])
-  serviceId Int?
+  serviceId String?
+  itemId    String?
   Item      Item?    @relation(fields: [itemId], references: [id])
-  itemId    Int?
+  Service   Service? @relation(fields: [serviceId], references: [id])
 }
 
 model Item {
-  id           Int      @id @default(autoincrement())
+  id           String   @id @default(uuid())
   serialNumber String
   tombNumber   String
   imei         String

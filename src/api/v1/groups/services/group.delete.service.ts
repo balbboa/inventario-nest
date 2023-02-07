@@ -2,27 +2,24 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
 
 @Injectable()
-export class OpmsFindOneService {
+export class GroupsDeleteService {
   constructor(private prisma: PrismaService) {}
 
-  // Obtem um opmo
-  async findOne(id: string) {
-    const opm = await this.prisma.opms.findUnique({
-      where: {
-        id: id
-      }
+  async delete(id: string) {
+    const group = await this.prisma.group.delete({
+      where: { id }
     });
 
-    if (!opm) {
+    if (!group) {
       throw new HttpException(
         {
           status: HttpStatus.NOT_FOUND,
-          error: 'Esta opm não existe'
+          error: 'Este grupo não existe'
         },
         HttpStatus.NOT_FOUND
       );
     }
 
-    return opm;
+    return group;
   }
 }

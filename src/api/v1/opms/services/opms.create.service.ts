@@ -11,7 +11,8 @@ export class OpmsCreateService {
     try {
       const opmExists = await this.prisma.opms.findFirst({
         where: {
-          name: data.name
+          name: data.name,
+          acronym: data.acronym
         }
       });
       if (opmExists) {

@@ -7,7 +7,7 @@ export class OpmsUpdateService {
   constructor(private prisma: PrismaService) {}
 
   // Atualiza a opm
-  async update(id: number, data: OpmDTO) {
+  async update(id: string, data: OpmDTO) {
     try {
       const opmExists = await this.prisma.opms.findUnique({
         where: {
