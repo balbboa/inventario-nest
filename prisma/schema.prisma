@@ -96,17 +96,18 @@ model Status {
   id        String   @id @default(uuid())
   name      String
   serviceId String?
-  itemId    String?
-  Item      Item?    @relation(fields: [itemId], references: [id])
+  item      Item[]
   Service   Service? @relation(fields: [serviceId], references: [id])
 }
 
 model Item {
-  id           String   @id @default(uuid())
+  id           String  @id @default(uuid())
   serialNumber String
   tombNumber   String
   imei         String
   obs          String
-  status       Status[]
-  model        Models[]
+  Models       Models? @relation(fields: [modelsId], references: [id])
+  modelsId     String?
+  Status       Status? @relation(fields: [statusId], references: [id])
+  statusId     String?
 }

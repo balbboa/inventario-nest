@@ -1,24 +1,24 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/PrismaService';
-import { GroupDTO } from '../groups.dto';
+import { ItemDTO } from '../items.dto';
 
 @Injectable()
-export class GroupsCreateService {
+export class ItemsCreateService {
   constructor(private prisma: PrismaService) {}
 
-  // Cria um novo grupo
-  async create(data: GroupDTO) {
+  // Cria um novo item
+  async create(data: ItemDTO) {
     try {
-      const groupExists = await this.prisma.group.findFirst({
+      const itemExists = await this.prisma.item.findFirst({
         where: {
-          name: data.name
+          serialNumber: data.serialNumber
         }
       });
-      if (groupExists) {
+      if (itemExists) {
         throw new HttpException(
           {
             status: HttpStatus.FORBIDDEN,
-            error: 'Este grupo já existe'
+            error: 'Este item já existe'
           },
           HttpStatus.FORBIDDEN
         );
@@ -33,10 +33,10 @@ export class GroupsCreateService {
       );
     }
 
-    const group = await this.prisma.group.create({
+    const item = await this.prisma.item.create({
       data
     });
 
-    return group;
+    return item;
   }
 }
