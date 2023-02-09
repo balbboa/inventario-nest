@@ -26,55 +26,58 @@ model Manufacturers {
 }
 
 model Supplier {
-  id          String        @id @default(uuid())
-  name        String
-  serviceId   String?
-  Service     Service?      @relation(fields: [serviceId], references: [id])
-  demand      Demand[]
-  serviceType ServiceType[]
+  id            String       @id @default(uuid())
+  name          String
+  service       Service[]
+  demand        Demand[]
+  ServiceType   ServiceType? @relation(fields: [serviceTypeId], references: [id])
+  serviceTypeId String?
 }
 
 model ServiceType {
-  id         String    @id @default(uuid())
-  name       String
-  supplierId String?
-  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  id       String     @id @default(uuid())
+  name     String
+  supplier Supplier[]
 }
 
 model Service {
-  id             String     @id @default(uuid())
+  id             String    @id @default(uuid())
   lineNumber     String
   contractNumber String
   obs            String
-  immobile       Immobile[]
-  status         Status[]
-  supplier       Supplier[]
+  Immobile       Immobile? @relation(fields: [immobileId], references: [id])
+  immobileId     String?
+  Status         Status?   @relation(fields: [statusId], references: [id])
+  statusId       String?
+  Supplier       Supplier? @relation(fields: [supplierId], references: [id])
+  supplierId     String?
 }
 
 model Immobile {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   place     String
   district  String
   city      String
   latitude  String
   longitude String
-  serviceId String?
-  demandId  String?
-  Demand    Demand?  @relation(fields: [demandId], references: [id])
-  Service   Service? @relation(fields: [serviceId], references: [id])
-  opm       Opms[]
+  demand    Demand[]
+  item      Item[]
+  Opms      Opms?     @relation(fields: [opmsId], references: [id])
+  opmsId    String?
+  service   Service[]
 }
 
 model Demand {
-  id         String     @id @default(uuid())
+  id         String    @id @default(uuid())
   amount     Int
   justify    String
   supplierId String?
   groupId    String?
-  Group      Group?     @relation(fields: [groupId], references: [id])
-  Supplier   Supplier?  @relation(fields: [supplierId], references: [id])
-  immobile   Immobile[]
+  Group      Group?    @relation(fields: [groupId], references: [id])
+  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
+  Immobile   Immobile? @relation(fields: [immobileId], references: [id])
+  immobileId String?
 }
 
 model Group {
@@ -85,29 +88,30 @@ model Group {
 }
 
 model Opms {
-  id         String    @id @default(uuid())
-  name       String
-  acronym    String
-  immobileId String?
-  Immobile   Immobile? @relation(fields: [immobileId], references: [id])
+  id       String     @id @default(uuid())
+  name     String
+  acronym  String
+  immobile Immobile[]
 }
 
 model Status {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
   serviceId String?
   item      Item[]
-  Service   Service? @relation(fields: [serviceId], references: [id])
+  service   Service[]
 }
 
 model Item {
-  id           String  @id @default(uuid())
+  id           String    @id @default(uuid())
   serialNumber String
   tombNumber   String
   imei         String
   obs          String
-  Models       Models? @relation(fields: [modelsId], references: [id])
+  Models       Models?   @relation(fields: [modelsId], references: [id])
   modelsId     String?
-  Status       Status? @relation(fields: [statusId], references: [id])
+  Status       Status?   @relation(fields: [statusId], references: [id])
   statusId     String?
+  Immobile     Immobile? @relation(fields: [immobileId], references: [id])
+  immobileId   String?
 }
