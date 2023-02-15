@@ -26,11 +26,11 @@ model Manufacturers {
 }
 
 model Supplier {
-  id            String       @id @default(uuid())
+  id            String          @id @default(uuid())
   name          String
   service       Service[]
-  demand        Demand[]
-  ServiceType   ServiceType? @relation(fields: [serviceTypeId], references: [id])
+  serviceDemand ServiceDemand[]
+  ServiceType   ServiceType?    @relation(fields: [serviceTypeId], references: [id])
   serviceTypeId String?
 }
 
@@ -54,37 +54,46 @@ model Service {
 }
 
 model Immobile {
-  id        String    @id @default(uuid())
-  name      String
-  place     String
-  district  String
-  city      String
-  latitude  String
-  longitude String
-  demand    Demand[]
-  item      Item[]
-  Opms      Opms?     @relation(fields: [opmsId], references: [id])
-  opmsId    String?
-  service   Service[]
+  id            String          @id @default(uuid())
+  name          String
+  place         String
+  district      String
+  city          String
+  latitude      String
+  longitude     String
+  serviceDemand ServiceDemand[]
+  itemDemand    ItemDemand[]
+  item          Item[]
+  Opms          Opms?           @relation(fields: [opmsId], references: [id])
+  opmsId        String?
+  service       Service[]
 }
 
-model Demand {
+model ServiceDemand {
   id         String    @id @default(uuid())
   amount     Int
   justify    String
   supplierId String?
-  groupId    String?
-  Group      Group?    @relation(fields: [groupId], references: [id])
   Supplier   Supplier? @relation(fields: [supplierId], references: [id])
   Immobile   Immobile? @relation(fields: [immobileId], references: [id])
   immobileId String?
 }
 
+model ItemDemand {
+  id         String    @id @default(uuid())
+  amount     Int
+  justify    String
+  Immobile   Immobile? @relation(fields: [immobileId], references: [id])
+  immobileId String?
+  Group      Group?    @relation(fields: [groupId], references: [id])
+  groupId    String?
+}
+
 model Group {
-  id     String   @id @default(uuid())
-  name   String
-  demand Demand[]
-  models Models[]
+  id         String       @id @default(uuid())
+  name       String
+  models     Models[]
+  itemDemand ItemDemand[]
 }
 
 model Opms {
