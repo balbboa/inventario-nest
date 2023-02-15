@@ -1,5 +1,5 @@
 export type ItemDemandDTO = {
   id?: number | any;
-  amount: number;
+  amount: string;
   justify: string;
 };

@@ -26,18 +26,18 @@ model Manufacturers {
 }
 
 model Supplier {
-  id            String          @id @default(uuid())
+  id            String       @id @default(uuid())
   name          String
   service       Service[]
-  serviceDemand ServiceDemand[]
-  ServiceType   ServiceType?    @relation(fields: [serviceTypeId], references: [id])
+  ServiceType   ServiceType? @relation(fields: [serviceTypeId], references: [id])
   serviceTypeId String?
 }
 
 model ServiceType {
-  id       String     @id @default(uuid())
-  name     String
-  supplier Supplier[]
+  id            String          @id @default(uuid())
+  name          String
+  supplier      Supplier[]
+  serviceDemand ServiceDemand[]
 }
 
 model Service {
@@ -70,18 +70,18 @@ model Immobile {
 }
 
 model ServiceDemand {
-  id         String    @id @default(uuid())
-  amount     Int
-  justify    String
-  supplierId String?
-  Supplier   Supplier? @relation(fields: [supplierId], references: [id])
-  Immobile   Immobile? @relation(fields: [immobileId], references: [id])
-  immobileId String?
+  id            String       @id @default(uuid())
+  amount        String
+  justify       String
+  Immobile      Immobile?    @relation(fields: [immobileId], references: [id])
+  immobileId    String?
+  ServiceType   ServiceType? @relation(fields: [serviceTypeId], references: [id])
+  serviceTypeId String?
 }
 
 model ItemDemand {
   id         String    @id @default(uuid())
-  amount     Int
+  amount     String
   justify    String
   Immobile   Immobile? @relation(fields: [immobileId], references: [id])
   immobileId String?

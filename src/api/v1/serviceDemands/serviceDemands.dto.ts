@@ -1,5 +1,5 @@
 export type ServiceDemandDTO = {
   id?: number | any;
-  amount: number;
+  amount: string;
   justify: string;
 };
